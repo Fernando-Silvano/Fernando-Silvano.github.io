@@ -22,7 +22,7 @@ jobs:
           test -s SECURITY.md
           ! grep -R -nE '(AKIA[0-9A-Z]{16}|-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----)' --include='*.html' --include='*.js' --include='*.md' . 
       - name: Check basic HTML structure
-        shell: python
+        shell: bash
         run: |
           python - <<'PY'
           from pathlib import Path
