@@ -1797,7 +1797,207 @@ Booting from Hard Disk...
                     <p><a href="#">Hotmail</a></p>
                     <hr>
                     <p style="font-size: 12px; color: #666;">Internet Explorer 4.0 - © 1995-1997 Microsoft Corporation</p>
-                </body>
+                
+<style id="simulator-upgrade-styles">
+  .win95-calculator{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;padding:10px;background:#c0c0c0}
+  .win95-calc-display{grid-column:1/-1;background:#fff;border:2px inset #fff;padding:9px;text-align:right;font:20px monospace;min-height:47px;overflow:hidden}
+  .win95-calc-btn{border:2px outset #eee;background:#c0c0c0;min-height:37px;cursor:pointer;font:700 15px Arial}
+  .win95-calc-btn:active{border-style:inset}
+  .win95-context{position:fixed;z-index:110000;background:#c0c0c0;border:2px outset #eee;box-shadow:2px 2px #222;padding:3px;min-width:180px;font:13px Arial;display:none}
+  .win95-context button{width:100%;display:block;text-align:left;padding:7px 12px;border:0;background:transparent;color:#000;cursor:pointer}
+  .win95-context button:hover,.win95-context button:focus{background:#000080;color:#fff}
+  .win95-context hr{border:0;border-top:1px solid #888;margin:3px 0}
+  .win95-note-tools{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:4px;background:#c0c0c0}
+  .win95-note-tools button{border:2px outset #eee;background:#c0c0c0;padding:4px 9px;cursor:pointer}
+  .win95-note-tools button:active{border-style:inset}
+  .win95-note-tools span{font:11px Arial;margin-left:auto}
+  .win95-upgrade-window{position:absolute;display:none;background:#c0c0c0;border:2px outset #eee;box-shadow:2px 2px #333;z-index:2000}
+  .win95-upgrade-window.show{display:block}
+  @media(max-width:600px){.win95-upgrade-window{max-width:calc(100vw - 12px)}.win95-note-tools span{display:none}}
+</style>
+<div id="win95Context" class="win95-context" role="menu" aria-label="Menu da área de trabalho">
+<button type="button" data-action="calc">🧮 Calculadora</button>
+<button type="button" data-action="notepad">📝 Bloco de Notas</button>
+<button type="button" data-action="computer">💻 Meu Computador</button>
+<hr><button type="button" data-action="refresh">↻ Atualizar área de trabalho</button>
+<button type="button" data-action="about">ℹ Sobre este simulador</button>
+</div>
+<div id="calculatorWindow" class="win95-upgrade-window window" data-custom-win95="calculator" style="width:260px;height:345px;left:190px;top:85px;">
+ <div class="window-titlebar"><span class="window-title">🧮 Calculadora</span><div class="window-controls"><div class="window-button minimize" title="Minimizar">_</div><div class="window-button close" title="Fechar">×</div></div></div>
+ <div class="win95-calculator" id="win95Calculator">
+   <output class="win95-calc-display" id="win95CalcDisplay" aria-live="polite">0</output>
+ </div>
+</div>
+<script id="simulator-upgrades">
+(() => {
+  'use strict';
+  const byId = id => document.getElementById(id);
+  const desktop = byId('desktop');
+  const context = byId('win95Context');
+  const calcWindow = byId('calculatorWindow');
+  const grid = byId('win95Calculator');
+  const display = byId('win95CalcDisplay');
+  let result = 0, operand = null, operation = null, startNew = true, justCalculated = false;
+  const printable = n => Number.isFinite(n) ? String(Number(n.toPrecision(11))) : 'Erro';
+  function calcInput(key) {
+    let current = display.textContent;
+    if (key === 'C' || key === 'Esc') {
+      result = 0; operand = null; operation = null; startNew = true; justCalculated = false; display.textContent = '0'; return;
+    }
+    if (/^[0-9]$/.test(key) || key === '.') {
+      if (key === '.' && !startNew && current.includes('.')) return;
+      display.textContent = startNew ? (key === '.' ? '0.' : key) : (current === '0' && key !== '.' ? key : current + key);
+      startNew = false; justCalculated = false; return;
+    }
+    if (key === '±') {display.textContent = printable(-(Number(current) || 0)); return;}
+    if (key === '⌫') {display.textContent = current.length > 1 ? current.slice(0,-1) : '0'; if(display.textContent === '-') display.textContent='0'; return;}
+    if (key === '%' ) {display.textContent = printable(Number(current)/100); startNew = true; return;}
+    const ops = {'+':(a,b)=>a+b, '-':(a,b)=>a-b, '×':(a,b)=>a*b, '÷':(a,b)=>b===0?NaN:a/b};
+    if (ops[key] || key === '=') {
+      const n = Number(current);
+      if (operation && operand !== null && !startNew) {
+        result = ops[operation](operand,n);
+        display.textContent = printable(result);
+        if (display.textContent === 'Erro') {operation=null;operand=null;startNew=true;return;}
+      } else result = n;
+      operand = result; startNew = true; justCalculated = key === '=';
+      operation = key === '=' ? null : key;
+    }
+  }
+  const layout = ['C','⌫','%','÷','7','8','9','×','4','5','6','-','1','2','3','+','±','0','.','='];
+  layout.forEach(key => {
+    const button = document.createElement('button');
+    button.type = 'button'; button.className = 'win95-calc-btn';
+    button.textContent = key;button.setAttribute('aria-label', 'Calculadora '+key);
+    button.addEventListener('click',()=>calcInput(key));grid.appendChild(button);
+  });
+  function front(el) {
+    if (typeof bringToFront === 'function') bringToFront(el);
+    else el.style.zIndex = 12000;
+    if(typeof updateTaskbar==='function')updateTaskbar();
+  }
+  function openCalc() {
+    calcWindow.classList.remove('minimized');calcWindow.classList.add('show');
+    front(calcWindow); context.style.display='none';
+  }
+  calcWindow.querySelector('.close').addEventListener('click',()=>{
+    calcWindow.classList.remove('show'); if(typeof updateTaskbar==='function')updateTaskbar();
+  });
+  calcWindow.querySelector('.minimize').addEventListener('click',()=>{
+    calcWindow.classList.add('minimized');if(typeof updateTaskbar==='function')updateTaskbar();
+  });
+  calcWindow.addEventListener('mousedown',()=>front(calcWindow));
+  // Pointer dragging is confined to viewport, avoiding off-screen title bars.
+  const title = calcWindow.querySelector('.window-titlebar');
+  let drag = null;
+  title.addEventListener('pointerdown', e => {
+    if(e.target.closest('.window-button'))return;
+    drag = {x:e.clientX-calcWindow.offsetLeft,y:e.clientY-calcWindow.offsetTop};
+    title.setPointerCapture(e.pointerId); e.preventDefault();front(calcWindow);
+  });
+  title.addEventListener('pointermove',e=>{
+    if(!drag)return;
+    calcWindow.style.left=Math.max(0,Math.min(innerWidth-100,e.clientX-drag.x))+'px';
+    calcWindow.style.top=Math.max(0,Math.min(innerHeight-80,e.clientY-drag.y))+'px';
+  });
+  title.addEventListener('pointerup',()=>drag=null);
+  title.addEventListener('pointercancel',()=>drag=null);
+  const start = byId('startMenu');
+  if(start){
+    const menu = start.querySelector('.start-menu-items') || start;
+    const item=document.createElement('div');
+    item.className='start-menu-item';item.textContent='🧮 Calculadora';
+    item.tabIndex=0; item.addEventListener('click',()=>{openCalc();start.classList.remove('show')});
+    item.addEventListener('keydown',e=>{if(e.key==='Enter'){openCalc();start.classList.remove('show')}});
+    menu.appendChild(item);
+  }
+  if(desktop){
+    desktop.addEventListener('contextmenu', e=>{
+      if(e.target.closest('.window'))return;
+      e.preventDefault();context.style.display='block';
+      context.style.left=Math.max(0,Math.min(e.clientX,innerWidth-190))+'px';
+      context.style.top=Math.max(0,Math.min(e.clientY,innerHeight-230))+'px';
+    });
+    desktop.addEventListener('click',()=>context.style.display='none');
+  }
+  context.addEventListener('click',e=>{
+    const b=e.target.closest('button[data-action]');if(!b)return;
+    context.style.display='none';
+    const a=b.dataset.action;
+    if(a==='calc')openCalc();
+    if(a==='notepad')openWindow('notepad');
+    if(a==='computer')openWindow('mycomputer');
+    if(a==='about')openWindow('about');
+    if(a==='refresh')document.querySelectorAll('.icon.selected').forEach(el=>el.classList.remove('selected'));
+  });
+  document.addEventListener('click',e=>{if(!context.contains(e.target))context.style.display='none'});
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape')context.style.display='none';
+    if(e.ctrlKey && e.altKey && e.key.toLowerCase()==='c'){e.preventDefault();openCalc();}
+    const active = document.activeElement;
+    if(calcWindow.classList.contains('show') && !calcWindow.classList.contains('minimized') &&
+       (calcWindow.contains(active) || active === document.body) && !e.ctrlKey && !e.altKey) {
+      let key=e.key==='Enter'?'=':e.key==='Backspace'?'⌫':e.key==='*'?'×':e.key==='/'?'÷':e.key;
+      if(['C','c','Escape','Backspace','Enter','*','/','+','-','%','.','=','0','1','2','3','4','5','6','7','8','9'].includes(e.key)) {
+        if(e.key==='Escape')return;
+        e.preventDefault();calcInput(key==='c'?'C':key);
+      }
+    }
+  });
+  // Save a Notepad document explicitly rather than silently storing user text.
+  const note = byId('notepadWindow');
+  if(note) {
+    const editor=note.querySelector('textarea');
+    if(editor){
+      const tools=document.createElement('div');tools.className='win95-note-tools';
+      const save=document.createElement('button');save.textContent='💾 Salvar .txt';
+      const load=document.createElement('button');load.textContent='📂 Abrir .txt';
+      const clear=document.createElement('button');clear.textContent='Novo';
+      const status=document.createElement('span');status.textContent='Documento não salvo';
+      const picker=document.createElement('input');picker.type='file';picker.accept='.txt,text/plain';picker.hidden=true;
+      save.addEventListener('click',()=>{
+        const blob=new Blob([editor.value],{type:'text/plain;charset=utf-8'});
+        const url=URL.createObjectURL(blob);const anchor=document.createElement('a');
+        anchor.href=url;anchor.download='documento.txt';anchor.click();
+        setTimeout(()=>URL.revokeObjectURL(url),1000);status.textContent='Arquivo exportado';
+      });
+      load.addEventListener('click',()=>picker.click());
+      picker.addEventListener('change',async()=>{
+        const file=picker.files&&picker.files[0];if(!file)return;
+        if(file.size>1024*1024){alert('Limite: 1 MB por arquivo.');return;}
+        editor.value=await file.text();status.textContent=file.name;picker.value='';
+      });
+      clear.addEventListener('click',()=>{
+        if(editor.value && !confirm('Descartar o texto atual?'))return;
+        editor.value='';status.textContent='Novo documento';editor.focus();
+      });
+      editor.addEventListener('input',()=>status.textContent='Alterações não salvas');
+      tools.append(save,load,clear,status,picker);
+      editor.parentNode.insertBefore(tools,editor);
+      note.addEventListener('keydown',e=>{if(e.ctrlKey&&e.key.toLowerCase()==='s'){e.preventDefault();save.click();}});
+    }
+  }
+  // Correct existing maximize/restore behavior while preserving original geometry.
+  document.querySelectorAll('.window:not([data-custom-win95]) .maximize').forEach(button=>{
+    button.addEventListener('click',()=>{
+      const win=button.closest('.window');
+      if(!win)return;
+      if(win.dataset.maxRestore){
+        const previous=JSON.parse(win.dataset.maxRestore);
+        Object.assign(win.style,previous);delete win.dataset.maxRestore;
+      }else{
+        // The legacy handler has already applied a maximized size; restore to
+        // the window's known baseline on the next click instead of 500x400 for all.
+        const baselines={mycomputerWindow:['500px','400px','100px','50px'],notepadWindow:['600px','400px','150px','100px'],ieWindow:['700px','500px','120px','80px'],recycleWindow:['500px','400px','130px','70px']};
+        const b=baselines[win.id]||['500px','400px','100px','50px'];
+        win.dataset.maxRestore=JSON.stringify({width:b[0],height:b[1],left:b[2],top:b[3]});
+      }
+    });
+  });
+})();
+</script>
+
+</body>
                 </html>
             `);
             frameDoc.close();
