@@ -1,231 +1,84 @@
-# 🖥️ Windows 95 Web Simulator
+# Windows 95 Web Simulator
 
-Uma recriação completa e funcional do Windows 95 utilizando apenas HTML, CSS e JavaScript vanilla. Experimente a nostalgia do sistema operacional mais icônico dos anos 90 diretamente no seu navegador!
+[![Static checks](https://github.com/Fernando-Silvano/Fernando-Silvano.github.io/actions/workflows/static-checks.yml/badge.svg)](https://github.com/Fernando-Silvano/Fernando-Silvano.github.io/actions/workflows/static-checks.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-![Windows 95](https://img.shields.io/badge/Windows-95-008080?style=for-the-badge&logo=windows95)
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+**[Try the live demo](https://fernando-silvano.github.io/)** · [Report a bug](https://github.com/Fernando-Silvano/Fernando-Silvano.github.io/issues/new/choose) · [Contribute](CONTRIBUTING.md)
 
-## 🌟 Demonstração
+An independent, educational, browser-based simulation inspired by the Windows 95 user experience. Built using **HTML, CSS and vanilla JavaScript**, without a build step. It is **not an emulator**, a Microsoft product, or an actual operating system.
 
-🔗 **[Acesse a demo ao vivo](https://fernando-silvano.github.io/)**
+## Why this project exists
 
-## ✨ Características
+The simulator offers an approachable environment for exploring historical desktop interaction patterns and learning how browser UI state, draggable windows, menus, application dialogs, and small games can be implemented without frameworks. Students and developers can inspect and modify the source directly.
 
-### 🎮 Interface Autêntica
-- **Desktop funcional** com ícones clicáveis
-- **Barra de tarefas** com relógio em tempo real
-- **Menu Iniciar** com efeitos hover e gradiente original
-- **Janelas arrastáveis** com controles de minimizar, maximizar e fechar
-- **Estilo visual 100% fiel** ao Windows 95 original
+## Features
 
-### 🚀 Sequência de Boot Realista
-- **Tela de Power Off** com botão de ligar interativo
-- **BIOS Phoenix-AwardBIOS** com logo Energy Star e erros realistas
-  - Pressione **F2** durante a BIOS para entrar no Setup
-  - BIOS Setup navegável com configurações fictícias
-- **Tela de carregamento** do Windows 95 com barra de progresso
-- **Tela de login** com autenticação
-  - Usuário: `administrador`
-  - Senha: `github`
+- Interactive power-on, simulated BIOS setup, boot animation and **fictional** login screen
+- Desktop with icons, Start menu, taskbar, and clock
+- Draggable windows with minimize, maximize and close controls
+- Simulated My Computer, drives, Control Panel and Recycle Bin interfaces
+- Editable Notepad-like text area
+- Internet Explorer-inspired **simulated** browser experience
+- Minesweeper-style game (8×8 board, 10 mines, flags, timer and reset)
+- Functional four-operation Calculator with keyboard support, clear, percent, sign toggle and backspace
+- Desktop right-click menu for opening apps and refreshing selection
+- Notepad file import/export as plain text, with a 1 MB import limit and discard confirmation
+- Calculator shortcut: **Ctrl+Alt+C**
+- Shutdown, reboot and logoff-themed flows
 
-### 💻 Programas Funcionais
+Features above describe the intended browser simulation; they do not grant access to real Windows software, physical drives or operating-system settings.
 
-#### 📁 Meu Computador
-- Visualização de drives (C:, D:, A:)
-- Ícones de Impressoras e Painel de Controle
-- Interface autêntica de explorador
+## Getting started
 
-#### 📝 Bloco de Notas
-- Editor de texto funcional
-- Área de texto editável
-- Interface clássica do Notepad
+No package installation is needed.
 
-#### 🌐 Internet Explorer
-- Navegador simulado
-- Barra de endereços
-- Botões de navegação
-- Conteúdo HTML customizado
-
-#### 💣 Campo Minado (Minesweeper)
-- **Jogo completo e funcional!**
-- Tabuleiro 8x8 com 10 minas
-- Sistema de revelação de células
-- Marcação de bandeiras com botão direito
-- Contador de minas e timer
-- Detecção de vitória/derrota
-- Botão de reset com emoticon
-
-#### 🗑️ Lixeira
-- Visualização de lixeira vazia
-- Interface autêntica
-
-#### ℹ️ Sobre o Windows 95
-- Informações do sistema
-- Logo e versão
-
-### 🔌 Sistema de Desligamento
-
-- **Dialog de desligamento** com 4 opções:
-  1. Desligar o computador
-  2. Reiniciar o computador
-  3. Reiniciar em modo MS-DOS
-  4. Fazer logon como outro usuário
-- **Tela de desligamento autêntica** com nuvens azuis e logo Windows 95
-- **Animações suaves** entre estados
-
-## 🛠️ Tecnologias Utilizadas
-
-- **HTML5** - Estrutura da página
-- **CSS3** - Estilização autêntica do Windows 95
-  - Gradients para efeitos 3D
-  - Animações e transições
-  - Layout responsivo
-- **JavaScript Vanilla** - Lógica e interatividade
-  - Sistema de janelas com z-index dinâmico
-  - Drag and drop
-  - Gerenciamento de eventos
-  - Lógica completa do Campo Minado
-
-## 📦 Instalação
-
-### Deploy no GitHub Pages
-
-1. **Fork este repositório**
-2. **Vá em Settings → Pages**
-3. **Em "Source", selecione a branch `main` ou `master`**
-4. **Salve e aguarde alguns minutos**
-5. **Acesse em**: `https://seu-usuario.github.io/nome-do-repositorio`
-
-### Uso Local
-
-1. **Clone o repositório**
 ```bash
-git clone https://github.com/seu-usuario/seu-repositorio.git
-cd seu-repositorio
-```
-
-2. **Abra o arquivo HTML**
-```bash
-# Windows
-start win95.html
-
-# Linux/Mac
-open win95.html
-# ou
-xdg-open win95.html
-```
-
-3. **Ou use um servidor local** (recomendado)
-```bash
-# Python 3
+git clone https://github.com/Fernando-Silvano/Fernando-Silvano.github.io.git
+cd Fernando-Silvano.github.io
 python -m http.server 8000
-
-# Node.js com npx
-npx serve
-
-# Acesse: http://localhost:8000
 ```
 
-## 🎯 Como Usar
+Open **http://localhost:8000/**. Alternatively, open `index.html` directly in a modern browser.
 
-### Iniciando o Sistema
-1. **Clique no botão Power** na tela preta
-2. **Durante a BIOS**, pressione **F2** para entrar no Setup (opcional)
-3. **Aguarde** o carregamento (3 segundos)
-4. **Faça login** com:
-   - Usuário: `administrador`
-   - Senha: `github`
+To explore the simulated boot sequence, click the power button. The demonstration login described by the original project uses the fictional username `administrador` and password `github`. **Never enter your real passwords.**
 
-### Navegação
-- **Clique simples** nos ícones para selecioná-los
-- **Duplo clique** nos ícones do desktop para abrir programas
-- **Menu Iniciar** → Clique em "Iniciar" na barra de tarefas
-- **Arraste janelas** pela barra de título (apenas janelas, não ícones)
-- **Botões de controle** no canto superior direito das janelas:
-  - `_` Minimizar
-  - `□` Maximizar
-  - `×` Fechar
+## Project structure
 
-### Jogando Campo Minado
-- **Clique esquerdo** para revelar célula
-- **Clique direito** para marcar/desmarcar bandeira
-- **Objetivo**: Revelar todas as células sem minas
-- **Clique no emoji** para reiniciar
+```text
+index.html                       Main HTML, CSS and JavaScript simulator
+favicon.png                      Site icon asset
+README.md                        Introduction and setup instructions
+LICENSE                          License for original code/eligible assets
+CONTRIBUTING.md                  Contribution guidelines
+SECURITY.md                      Vulnerability reporting policy
+.github/workflows/               Basic continuous-integration checks
+.github/ISSUE_TEMPLATE/          Bug report and feature request forms
+.github/pull_request_template.md Pull request checklist
+```
 
-### Desligando
-1. **Menu Iniciar → Desligar...**
-2. **Selecione uma opção**
-3. **Clique em "Sim"**
+## Development and quality
 
-## 🎨 Detalhes Técnicos
+This intentionally small static web project is a useful starting point for frontend experimentation. Pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for local setup, testing expectations and review workflow. The [GitHub Actions checks](.github/workflows/static-checks.yml) verify basic file and HTML structure, and scan for a limited set of common secret patterns. **They are not a complete security audit or browser test suite.**
 
-### Paleta de Cores Autêntica
-- Desktop: `#008080` (Teal)
-- Janelas: `#c0c0c0` (Cinza claro)
-- Barra de título: Gradiente `#000080` → `#1084d0`
-- Bordas 3D: `#dfdfdf` (highlight) e `#808080` (shadow)
+Security disclosures: [SECURITY.md](SECURITY.md).
 
-### Ícones
-- Ícones originais do Windows 98 via [win98icons.alexmeub.com](https://win98icons.alexmeub.com)
-- Floppy disk com SVG inline personalizado
+### Roadmap (proposals, not implemented promises)
 
-### Funcionalidades Técnicas
-- Sistema de z-index dinâmico para gerenciamento de janelas
-- Drag and drop para movimentação de janelas
-- Event delegation para performance
-- LocalStorage não utilizado (estado não persiste)
-- Sem dependências externas
-- Código vanilla puro (sem frameworks)
+- Improve accessibility and keyboard navigation
+- Add automated browser interaction tests
+- Make window management more modular and easier to test
+- Add Paint and more classic mini-apps
+- Explore opt-in local persistence for simulated user data
+- Improve layouts for smaller screens
 
-## 📝 Roadmap
+## Open source and third-party attribution
 
-- [ ] Ícones arrastáveis no desktop
-- [ ] Adicionar sons do Windows 95
-- [ ] Paint simulado
-- [ ] Calculadora funcional
-- [ ] More games (Solitaire, FreeCell)
-- [ ] Sistema de arquivos com localStorage
-- [ ] Temas customizáveis
-- [ ] Modo mobile responsivo
+Original project source code is released under the [MIT License](LICENSE), to the extent the copyright holder has rights to license it. **This grant does not cover third-party materials.** Windows, Windows 95, Internet Explorer, associated logos and interface trademarks belong to their respective owners. Some icon imagery is referenced from [Windows 98 Icon Viewer](https://win98icons.alexmeub.com) (Alex Meub); inspect third-party usage rights before redistribution or reuse.
 
-## 🤝 Contribuindo
+This fan-made educational interface is not affiliated with, endorsed by, or sponsored by Microsoft.
 
-Contribuições são bem-vindas! Sinta-se à vontade para:
+## Community and transparency
 
-1. **Fazer um Fork** do projeto
-2. **Criar uma branch** para sua feature (`git checkout -b feature/MinhaFeature`)
-3. **Commit suas mudanças** (`git commit -m 'Adiciona MinhaFeature'`)
-4. **Push para a branch** (`git push origin feature/MinhaFeature`)
-5. **Abrir um Pull Request**
+The repository is publicly accessible and accepts contributions, but no claim of large-scale adoption, external contributors or particular download counts is made here. Project impact should be assessed through verifiable public activity and its potential learning value.
 
-## 📄 Licença
-
-Este projeto é livre para uso pessoal e educacional. Windows 95 e todos os recursos relacionados são marcas registradas da Microsoft Corporation.
-
-## 🙏 Créditos
-
-- **Ícones**: [Windows 98 Icon Viewer](https://win98icons.alexmeub.com) por Alex Meub
-- **Inspiração**: Microsoft Windows 95 (1995-2001)
-- **Desenvolvido com**: ❤️ e muita nostalgia
-
-## 📸 Screenshots
-
-### Desktop
-![Desktop](screenshots/desktop.png)
-
-### BIOS Setup
-![BIOS](screenshots/bios.png)
-
-### Campo Minado
-![Minesweeper](screenshots/minesweeper.png)
-
-### Internet Explorer
-![IE](screenshots/ie.png)
-
----
-
-⭐ **Se você gostou deste projeto, deixe uma estrela!** ⭐
-
-💾 Feito com saudades da era Dial-Up 💾
+[Open an issue](https://github.com/Fernando-Silvano/Fernando-Silvano.github.io/issues) to report a reproducible problem or suggest an improvement.
