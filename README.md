@@ -20,6 +20,10 @@ The simulator offers an approachable environment for exploring historical deskto
 - Editable Notepad-like text area
 - Internet Explorer-inspired **simulated** browser experience
 - Minesweeper-style game (8×8 board, 10 mines, flags, timer and reset)
+- Functional four-operation Calculator with keyboard support, clear, percent, sign toggle and backspace
+- Desktop right-click menu for opening apps and refreshing selection
+- Notepad file import/export as plain text, with a 1 MB import limit and discard confirmation
+- Calculator shortcut: **Ctrl+Alt+C**
 - Shutdown, reboot and logoff-themed flows
 
 Features above describe the intended browser simulation; they do not grant access to real Windows software, physical drives or operating-system settings.
@@ -63,7 +67,7 @@ Security disclosures: [SECURITY.md](SECURITY.md).
 - Improve accessibility and keyboard navigation
 - Add automated browser interaction tests
 - Make window management more modular and easier to test
-- Add Paint, Calculator and more classic mini-apps
+- Add Paint and more classic mini-apps
 - Explore opt-in local persistence for simulated user data
 - Improve layouts for smaller screens
 
