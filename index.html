@@ -161,7 +161,12 @@
             writing-mode: vertical-rl;
             transform: rotate(180deg);
             float: left;
-            height: 300px;
+            height: auto;
+            min-height: 100%;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
         }
 
         .start-menu-items {
@@ -1820,7 +1825,7 @@ Booting from Hard Disk...
   .win95-note-tools button:active{border-style:inset}
   .win95-note-tools span{font:11px Arial;margin-left:auto}
   .win95-upgrade-window{position:absolute;display:none;background:#c0c0c0;border:2px outset #eee;box-shadow:2px 2px #333;z-index:2000}
-  .win95-upgrade-window.show{display:block}
+  .win95-upgrade-window.show{display:flex;min-width:260px;min-height:330px}
   @media(max-width:600px){.win95-upgrade-window{max-width:calc(100vw - 12px)}.win95-note-tools span{display:none}}
 </style>
 <div id="win95Context" class="win95-context" role="menu" aria-label="Menu da área de trabalho">
@@ -1830,7 +1835,7 @@ Booting from Hard Disk...
 <hr><button type="button" data-action="refresh">↻ Atualizar área de trabalho</button>
 <button type="button" data-action="about">ℹ Sobre este simulador</button>
 </div>
-<div id="calculatorWindow" class="win95-upgrade-window window" data-custom-win95="calculator" style="width:260px;height:345px;left:190px;top:85px;">
+<div id="calculatorWindow" class="win95-upgrade-window window" data-custom-win95="calculator" style="width:280px;height:345px;left:190px;top:85px;">
  <div class="window-titlebar"><span class="window-title">🧮 Calculadora</span><div class="window-controls"><div class="window-button minimize" title="Minimizar">_</div><div class="window-button close" title="Fechar">×</div></div></div>
  <div class="win95-calculator" id="win95Calculator">
    <output class="win95-calc-display" id="win95CalcDisplay" aria-live="polite">0</output>
@@ -1914,10 +1919,14 @@ Booting from Hard Disk...
   if(start){
     const menu = start.querySelector('.start-menu-items') || start;
     const item=document.createElement('div');
-    item.className='start-menu-item';item.textContent='🧮 Calculadora';
+    item.className='start-menu-item';
+    const image=document.createElement('img');
+    image.src='https://win98icons.alexmeub.com/icons/png/calculator-0.png';
+    image.alt=''; item.append(image,document.createTextNode('Calculadora'));
     item.tabIndex=0; item.addEventListener('click',()=>{openCalc();start.classList.remove('show')});
     item.addEventListener('keydown',e=>{if(e.key==='Enter'){openCalc();start.classList.remove('show')}});
-    menu.appendChild(item);
+    const shutdown = [...menu.querySelectorAll('.start-menu-item')].find(x=>x.textContent.includes('Desligar'));
+    menu.insertBefore(item,shutdown || null);
   }
   if(desktop){
     desktop.addEventListener('contextmenu', e=>{
